@@ -13,7 +13,6 @@ Vue + Vuex + Vue-cli + ElementUI。 本项目主要提供一套基础、稳定�
 react-seed/
   build
   config
-  dist
   src/
     assets/
     pages/
