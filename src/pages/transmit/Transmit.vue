@@ -42,6 +42,7 @@ export default {
       this.color = val;
     },
     clearColor () {
+      this.value = '';
       this.color = '';
     },
     showColor () {
