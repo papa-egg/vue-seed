@@ -38,7 +38,7 @@ vue-seed/
 * `router` 路由配置中心
 * `vuex` 全局的状态管理
 * `App.vue` 根模板文件
-* `main.js` 公共入口配置中心
+* `main.js` 入口配置中心
 
 ## 代码风格
 基础模板如下：
@@ -101,7 +101,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>
 
@@ -136,26 +136,63 @@ export default new Router({
 })
 ```
 更多vue-router用法可以参考[vue-router文档 ](https://router.vuejs.org/)
-## 组件结构
+
+## 数据通信
+```js
+
+// pages/transmit/Transmit.js
+
+<color-board :color="color" ref="colorBoard" @clearColor="clearColor"></color-board>
+
+// pages/transmit/components/color-board/ColorBoard.js
+
+<template>
+  <div v-if="color">
+    <div class="color-board" :style="'background:' + color"></div>
+    <el-button @click="clearColor">清空颜色</el-button>
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {}
+  },
+
+  props: {
+    color: {
+      default: '',
+    },
+  },
+
+  methods: {
+    clearColor () {
+      this.$emit('clearColor');
+    },
+    showColor () {
+      ... stuff
+    },
+  },
+}
+</script>
 ```
-pages/
-    components/
-    router-demo/
-        components/
-            router-page1/
-                RouterPage1.vue
-            router-page2/
-                RouterPage2.vue
-        RouterDemo.vue
-```
-整体组件采用由大到小，层层细化的组件嵌套方式进行构建（该结构针对大型项目固然不错，然而过犹不及，不建议嵌套过多层次造成难以理解的情况~）；
-##组件通信（vuex）
-组件之间通信可以说是核心难点，父子之间直接通信永远是最优先选择，例：`<LeftBar :navList="navList"></LeftBar>`；<br>
-对于极少部分没有明确的关联的数据，采用`vuex`进行维护，仅做极少数据的状态管理，不提倡大规模的使用 ---- 游离于全局的变量无疑是危险的根源，不值得为贪图一时之快去大量使用；<br>
+组件之间通信可以说是核心难点，父子之间直接通信永远是最优先选择，例：`<color-board :color="color" ref="colorBoard" @clearColor="clearColor"></color-board>`<br>
+纯粹数据只需使用props进行绑定，并且只能由父组件往子组件传递；子组件只能通过调用父组件的方法来变向操作传入数据例：`this.$emit('clearColor');`<br>
+父组件也可以通过ref调用子组件方法，例：`this.$refs.colorBoard.showColor()`当然，实际这种场景并不多;
+
+## 全局状态管理（vuex）
+对于极少部分没有明确的父子关联的全局数据，采用`vuex`进行维护，例如用户名字和头像，可以统一管理操作，可以减少一些不必要的请求；<br>
+vuex仅做极少数据的状态管理，不提倡大规模的使用 ---- 游离于全局的变量无疑是危险的根源，不值得为贪图一时之快去过度使用。<br>
 
 `vuex`更详细demo请参考具体目录：
 * `src/pages/vuex-demo`
 * `vuex/`
+
+## 文件（模块）引用
+所有图片文件全部放置于cdn上，引用绝对路径，cdn上传地址：`https://signin.aliyun.com/fhld/login.htm`(请先找桃片开通)<br>
+其它除了有明确父子关系的组件可以采用相对路径之外，都采用`@/...`做src根路径进行索引，预防模块（文件）路径变化而引发引用错误；<br>
+例：`import CONFIG from '@/assets/js/config';`
+
 ## css规范
 如果采用less作为css预处理工具，完成样式设计之余也请做好类似组件模块的清晰划分；<br>
 less做预处理固然方便，然而不提倡进行过多的层级嵌套（最多不要超过三层），例如：
