@@ -1,5 +1,5 @@
-import { Loading, Message } from 'element-ui'
-import CONFIG from './config'
+import { Loading, Message } from 'element-ui';
+import CONFIG from './config';
 
 /**
  * @param { String } api
@@ -9,15 +9,14 @@ import CONFIG from './config'
  */
 function ajax (api, sendData = {}, isLoading) {
   try {
-    let loadingInstance = null;
-
-    // loading transition
-    if (isLoading) {
-      loadingInstance = Loading.service({ fullscreen: true })
-    }
-
     const sendUrl = apiFilter(api);
     const xhr = new XMLHttpRequest();
+    let loadingInstance = null;
+    let startTime = Date.parse(new Date());
+
+    if (isLoading) {
+      loadingInstance = Loading.service({ fullscreen: true });
+    }
 
     return new Promise((resolve, reject) => {
       xhr.open('post', sendUrl, true);
@@ -27,7 +26,6 @@ function ajax (api, sendData = {}, isLoading) {
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
 
-          // close loading
           if (isLoading) {
             loadingInstance.close();
           }
@@ -41,7 +39,7 @@ function ajax (api, sendData = {}, isLoading) {
               if (resData.statusCode === 401) {
 
                 // Link to login page
-                //window.$vue.$router.push('/login');
+                // window.$vue.$router.push('/login');
 
                 return;
               }
@@ -55,16 +53,34 @@ function ajax (api, sendData = {}, isLoading) {
               } else {
                 console.error('Request failed, resData: ' + JSON.stringify(resData));
                 console.error(resData);
-                console.error('--------------------------------');
+
                 reject(resData);
               }
             }
           } else {
-            Message({
-              showClose: true,
-              message: '请求失败, 请检查网络或重试',
-              type: 'error'
-            });
+            if (!window.navigator.onLine) {
+              Message({
+                showClose: true,
+                message: '网络断开，请检查网络！',
+                type: 'error'
+              });
+            } else {
+              let endTime = Date.parse(new Date());
+
+              if (parseFloat((endTime - startTime) / 1000) >= 9) {
+                Message({
+                  showClose: true,
+                  message: '请求超时, 请检查网络或重试',
+                  type: 'error',
+                });
+              } else {
+                Message({
+                  showClose: true,
+                  message: '请求失败, 请检查网络或重试',
+                  type: 'error',
+                });
+              }
+            }
 
             if (isLoading) {
               loadingInstance.close();
@@ -77,7 +93,13 @@ function ajax (api, sendData = {}, isLoading) {
     });
 
   } catch (err) {
-    console.error(err)
+    console.error(err);
+
+    Message({
+      showClose: true,
+      message: '系统错误：' + err,
+      type: 'error'
+    });
   }
 }
 
