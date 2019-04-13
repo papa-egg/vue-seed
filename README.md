@@ -4,8 +4,9 @@
 ---- 植根于内心的修养, 以约束为前提的自由
 
 Vue + Vuex + Vue-cli + ElementUI。 本项目主要提供一套基础、稳定的[Vue](https://cn.vuejs.org/)项目架构和统一的代码风格；<br>
-针对实际项目，提供一个完整清晰的Vue脉络，并在此基础上逐步完善；<br>
-整体基于[Vue-cli](https://cli.vuejs.org/zh/guide/cli-service.html)，更多方法请参考[Vue官方文档](https://cn.vuejs.org/)。
+针对实际项目，提供一套完整清晰的Vue脉络、结构。<br>
+经过多年实践打磨，已作为多套项目的基本模板<br>
+
 
 ## 项目结构
 创建之后，您的项目应该是这样：
