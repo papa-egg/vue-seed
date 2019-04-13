@@ -10,20 +10,10 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
-      /*'/api': {  //代理地址
-          target: 'http://aapi.fhld-inc.com/',  //需要代理的地址
-          changeOrigin: true,  //是否跨域
-          secure: false,
-          pathRewrite: {
-            '^/api': ''  //本身的接口地址没有 '/api' 这种通用前缀，所以要rewrite，如果本身有则去掉
-          },
-      }*/
-    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 80, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 8888, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
