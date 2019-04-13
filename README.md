@@ -5,7 +5,7 @@
 
 Vue + Vuex + Vue-cli + ElementUI。 本项目主要提供一套基础、稳定的[Vue](https://cn.vuejs.org/)项目架构和统一的代码风格；<br>
 针对实际项目，提供一套完整清晰的Vue脉络、结构。<br>
-经过多年实践打磨，已作为多套项目的基本模板<br>
+经过多年实践打磨，已作为多套项目的基本模板。<br>
 
 
 ## 项目结构
@@ -32,13 +32,13 @@ vue-seed/
   package.json
   package-lock.json
 ```
-整体文件操作都尽可能包含于src目录下，具体功能划分如下：
-* `assets`公共资源，css，js，images等
-* `pages`页面.vue模板文件，采用层层嵌套方式细化各模块
-* `router`最外围路由配置
-* `vuex`全局的状态管理，并不提倡大范围使用，父子之间直接通信永远是最优选择
-* `App.vue`根模板
-* `main.js`公共入口配置中心
+整体绝大部分操作都尽可能包含于src目录下，具体功能划分如下：
+* `assets` 公共资源，css，js，images等
+* `pages` 页面.vue模板文件，采用层层嵌套方式细化各模块
+* `router` 路由配置中心
+* `vuex` 全局的状态管理
+* `App.vue` 根模板文件
+* `main.js` 公共入口配置中心
 
 ## 代码风格
 基本模板如下：
@@ -62,7 +62,7 @@ export default {
 
     // get the user name
     async getUserName () {
-      const { data } = await this.$ajax('/xxxxxxxxxxx');
+      const { data } = await this.$ajax('/get_user_name', { id: 123456 });
 
       this.name = data.name;
     },
@@ -70,13 +70,17 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>
 
 ```
-采用es6编码风格，比起紧凑的代码书写，更提倡多运用空格和换行来让整体项目保持清晰，例：`<p>{{ name }}</p>`<br>
-异步请求全局使用自定义ajax封装插件，方便针对项目进行自定义配置<br>
+接口请求使用全局自定义ajax封装插件，放置于`/assets/js/ajax.js`并可针对实际项目进行自定义配置<br>
+采用（es6）async await语法封装使用，例：`await this.$ajax('/get_user_name', { id: 123456 });`<br>
+错误处理等业已全部包含在组件本身当中进行过滤，开发时只需对最后success情况进行负责并对返回数据进行相应操作，尽量减少重复代码;
+
+项目整体采用es6编码风格，并用eslint进行强制规范;<br>
+比起紧凑的代码书写，更提倡多运用空格和换行来让整体项目保持清晰，例：`<p>{{ name }}</p>`<br>
 ## 路由
 路由是单页面应用的核心，全部路由配置放置在`router/index.js`进行统一管理，除此之外，针对主要模块进行按需加载（使用`require.ensure`）来优化整体加载效率
 ```js
