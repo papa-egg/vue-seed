@@ -37,6 +37,10 @@ export default new Router({
           component: RouterPage2,
         }
       ]
-    }
+    },
+    {
+      path: '/*',
+      component: Home,
+    },
   ]
 })
